@@ -6,6 +6,7 @@ import HomeLayout from "../Layouts/HomeLayout";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import MyTransactions from "../Pages/MyTransactions";
 
 const router = createBrowserRouter(
     [
@@ -25,6 +26,11 @@ const router = createBrowserRouter(
                     path: "/register",
                     element: <Register></Register> ,
                 },
+                {
+                    path: "/my-transactions",
+                    element: <MyTransactions></MyTransactions> ,
+                },
+                
             ]
         },
         {

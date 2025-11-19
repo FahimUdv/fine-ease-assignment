@@ -1,0 +1,92 @@
+[
+  {
+    "type": "expanse",
+    "category": "home",
+    "amount": 1000,
+    "description": "house rent",
+    "date": "2025-01-15T00:00:00.000Z",
+    "email": "xyz@gmail.com",
+    "name": "Hero"
+  },
+  {
+    "type": "income",
+    "category": "salary",
+    "amount": 25000,
+    "description": "monthly salary received",
+    "date": "2025-01-01T00:00:00.000Z",
+    "email": "abc@gmail.com",
+    "name": "Liam"
+  },
+  {
+    "type": "expanse",
+    "category": "food",
+    "amount": 450,
+    "description": "grocery shopping",
+    "date": "2025-01-12T00:00:00.000Z",
+    "email": "user1@gmail.com",
+    "name": "Noah"
+  },
+  {
+    "type": "income",
+    "category": "freelance",
+    "amount": 4000,
+    "description": "client project payment",
+    "date": "2025-01-10T00:00:00.000Z",
+    "email": "emma@gmail.com",
+    "name": "Emma"
+  },
+  {
+    "type": "expanse",
+    "category": "transport",
+    "amount": 120,
+    "description": "bus fare",
+    "date": "2025-01-08T00:00:00.000Z",
+    "email": "user2@gmail.com",
+    "name": "Olivia"
+  },
+  {
+    "type": "income",
+    "category": "bonus",
+    "amount": 5000,
+    "description": "yearly performance bonus",
+    "date": "2025-01-05T00:00:00.000Z",
+    "email": "ethan@gmail.com",
+    "name": "Ethan"
+  },
+  {
+    "type": "expanse",
+    "category": "utilities",
+    "amount": 600,
+    "description": "electricity bill",
+    "date": "2025-01-07T00:00:00.000Z",
+    "email": "user3@gmail.com",
+    "name": "Ava"
+  },
+  {
+    "type": "income",
+    "category": "gift",
+    "amount": 2000,
+    "description": "birthday gift money",
+    "date": "2025-01-20T00:00:00.000Z",
+    "email": "mia@gmail.com",
+    "name": "Mia"
+  },
+  {
+    "type": "expanse",
+    "category": "shopping",
+    "amount": 2200,
+    "description": "clothing purchase",
+    "date": "2025-01-18T00:00:00.000Z",
+    "email": "user4@gmail.com",
+    "name": "James"
+  },
+  {
+    "type": "income",
+    "category": "refund",
+    "amount": 950,
+    "description": "product refund",
+    "date": "2025-01-03T00:00:00.000Z",
+    "email": "sophia@gmail.com",
+    "name": "Sophia"
+  }
+]
