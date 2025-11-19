@@ -1,5 +1,6 @@
 import React from "react";
 import heroBanner from "../assets/heroBanner.mp4";
+import { Link } from "react-router";
 
 const Login = () => {
   return (
@@ -116,9 +117,9 @@ const Login = () => {
 
           <p className="mt-6 text-center text-sm">
             Don’t have an account?
-            <span className="ml-1 text-primary cursor-pointer hover:underline">
+            <Link to="/register" className="ml-1 text-primary cursor-pointer hover:underline">
               Sign Up
-            </span>
+            </Link>
           </p>
         </div>
       </div>

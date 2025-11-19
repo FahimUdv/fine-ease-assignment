@@ -1,12 +1,13 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import logo from "../assets/logo-white.png"
+import heroBanner from "../assets/heroBanner.mp4";
 
 const Navbar = () => {
   
   const links = [
     <NavLink className="md:mx-3">Home</NavLink>,
-    <NavLink className="md:mx-3">Add Transactions</NavLink>,
+    <NavLink to="/add-transactions" className="md:mx-3">Add Transactions</NavLink>,
     <NavLink to="/my-transactions" className="md:mx-3">My Transactions</NavLink>,
     <NavLink className="md:mx-3">Reports</NavLink>,
   ]  
@@ -47,7 +48,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end md:me-5">
-        <a className="btn rounded-full">Login</a>
+        <NavLink to="/login" className="btn rounded-full">Login</NavLink>
       </div>
     </div>
     </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import heroBanner from "../assets/heroBanner.mp4";
+import { Link } from "react-router";
 
 const Register = () => {
   return (
@@ -136,9 +137,9 @@ const Register = () => {
           {/* Login Redirect */}
           <p className="mt-6 text-center text-sm">
             Already have an account?
-            <span className="ml-1 text-primary cursor-pointer hover:underline">
+            <Link to="/login" className="ml-1 text-primary cursor-pointer hover:underline">
               Log In
-            </span>
+            </Link>
           </p>
         </div>
       </div>
