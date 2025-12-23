@@ -1,7 +1,40 @@
-import React from "react";
+import React, { use, useContext } from "react";
 import coins from "../assets/coins.jpg";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const AddTransactions = () => {
+  const { user } = useContext(AuthContext);
+
+  const handleAddTransaction = (e) => {
+    e.preventDefault();
+
+    const formData = {
+      type: e.target.type.value,
+      title: e.target.title.value,
+      category: e.target.category.value,
+      amount: e.target.amount.value,
+      description: e.target.description.value,
+      date: e.target.date.value,
+      email: user.email,
+    };
+
+    fetch("http://localhost:3000/transactions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+      }
+    )
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.log("Error adding transaction:", error);
+    }); 
+  };
+
   return (
     <div className="md:mt-10 md:mb-20">
       <h1 className="md:text-5xl font-semibold leading-16 text-center md:mb-10">
@@ -20,15 +53,29 @@ const AddTransactions = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* -------- Left Form Section -------- */}
-          <form className="space-y-6">
+          <form onSubmit={handleAddTransaction} className="space-y-6">
             {/* Row 1 */}
-            <div className="grid grid-cols-3 gap-4 md:mt-4">
-              <select className="select select-bordered bg-gray-100 w-full">
+            {/* Description */}
+            <input
+              type="text"
+              name="title"
+              placeholder="Title"
+              className="input input-bordered bg-gray-100 w-full"
+            />
+
+            <div className="grid grid-cols-3 gap-4">
+              <select
+                name="type"
+                className="select select-bordered bg-gray-100 w-full"
+              >
                 <option>Income</option>
                 <option>Expense</option>
               </select>
 
-              <select className="select select-bordered bg-gray-100 w-full">
+              <select
+                name="category"
+                className="select select-bordered bg-gray-100 w-full"
+              >
                 <option>Salary</option>
                 <option>Investment</option>
                 <option>House Rent</option>
@@ -42,6 +89,7 @@ const AddTransactions = () => {
 
               <input
                 type="number"
+                name="amount"
                 placeholder="Amount"
                 className="input input-bordered bg-gray-100 w-full"
               />
@@ -50,23 +98,24 @@ const AddTransactions = () => {
             {/* Description */}
             <textarea
               placeholder="Type"
+              name="description"
               className="textarea textarea-bordered bg-gray-100 w-full h-32"
             ></textarea>
 
             {/* Row 3 */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <input
                 type="date"
+                name="date"
+                value={new Date().toISOString().split("T")[0]}
+                readOnly
                 className="input input-bordered bg-gray-100 w-full"
               />
-              <input
-                type="text"
-                placeholder="Name"
-                className="input input-bordered bg-gray-100 w-full"
-              />
+
               <input
                 type="email"
-                placeholder="Email"
+                value={user?.email || ""}
+                readOnly
                 className="input input-bordered bg-gray-100 w-full"
               />
             </div>

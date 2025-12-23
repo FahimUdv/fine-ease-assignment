@@ -1,8 +1,50 @@
-import React from "react";
+import React, { use, useContext } from "react";
 import heroBanner from "../assets/heroBanner.mp4";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import { AuthContext } from "../Provider/AuthProvider";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import app from "../Firebase/firebase.config";
+const auth = getAuth(app);
+
+const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
+  const { setUser } = useContext(AuthContext);
+  const { signIn } = use(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleGoogleSignUp = () => {
+    if (!auth) return console.log("Auth is not available");
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        navigate(`${location.state ? location.state : "/"}`);
+      })
+      .catch((error) => console.log("Error during Google sign-up:", error));
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+    signIn(email, password)
+      .then((result) => {
+        // Signed in
+        const user = result.user;
+        console.log(user);
+        navigate(`${location.state ? location.state : "/"}`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorCode, errorMessage);
+      });
+    // Handle login logic here
+  };
   return (
     <div className="relative overflow-hidden rounded-4xl md:mx-30 md:py-8 flex items-center justify-center bg-base-200 md:mt-10 md:mb-20">
       <video
@@ -29,7 +71,8 @@ const Login = () => {
                 Empowering You to Master Your Money
               </h1>
               <p className="text-gray-200 mt-4 max-w-xs">
-                Transform the way you manage income, expenses, and savings with clarity and purpose.
+                Transform the way you manage income, expenses, and savings with
+                clarity and purpose.
               </p>
             </div>
           </div>
@@ -44,13 +87,14 @@ const Login = () => {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             {/* Email */}
             <div>
               <label className="label">
                 <span className="label-text text-black">Email</span>
               </label>
               <input
+                name="email"
                 type="email"
                 placeholder="Enter your email"
                 className="input input-bordered w-full"
@@ -63,6 +107,7 @@ const Login = () => {
                 <span className="label-text text-black">Password</span>
               </label>
               <input
+                name="password"
                 type="password"
                 placeholder="Enter your password"
                 className="input input-bordered w-full"
@@ -79,15 +124,15 @@ const Login = () => {
             </div>
 
             {/* Login Button */}
-            <button className="btn btn-neutral w-full text-white">
-              Sign In
+            <button type="submit" className="btn btn-neutral w-full text-white">
+              Login
             </button>
 
             {/* OR */}
             <div className="text-center text-sm text-gray-400">OR</div>
 
             {/* Google */}
-            <button className="btn btn-outline w-full">
+            <button onClick={handleGoogleSignUp} className="btn btn-outline w-full">
               <svg
                 className="w-5 h-5 mr-2"
                 viewBox="0 0 48 48"
@@ -117,7 +162,10 @@ const Login = () => {
 
           <p className="mt-6 text-center text-sm">
             Don’t have an account?
-            <Link to="/register" className="ml-1 text-primary cursor-pointer hover:underline">
+            <Link
+              to="/register"
+              className="ml-1 text-primary cursor-pointer hover:underline"
+            >
               Sign Up
             </Link>
           </p>

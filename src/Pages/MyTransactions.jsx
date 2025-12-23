@@ -1,76 +1,41 @@
-import React from 'react';
-import TransactionsTable from '../Components/TransactionsTable';
+import React from "react";
+import TransactionsTable from "../Components/TransactionsTable";
+import { useLoaderData } from "react-router";
 
 const MyTransactions = () => {
-    return (
-        <div className='md:mx-28 md:my-20 flex flex-col justify-center'>
-           {/* <h1 className='md:text-5xl font-semibold leading-16 text-center md:mt-10'>My Transaction</h1>
-           <div className='flex flex-col md:flex-row justify-between items-center bg-gray-50 rounded-2xl p-8 shadow-sm gap-6 md:mt-10'>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg'>01</p>
-            </div>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold'>Type: <span>Expense</span></p>
-            </div>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold'>Category:  <span>Shopping</span></p>
-            </div>
-            <div className='flex items-center bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold md:me-3'>Amount:  </p>
-                <input type="number" value="1000" readonly className="input input-bordered w-full bg-base-200 text-gray-700 font-semibold" />
-            </div>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold'>Date:  <span>25 January, 2025</span></p>
-            </div>
-            <button className='btn btn-primary'>View Details</button>
-            <button className='btn btn-primary'>Update</button>
-            <button className='btn btn-primary'>Delete</button>
-           </div>
+  const data = useLoaderData();
+//   console.log(data);
+  return (
+    <div className="md:mx-28 md:mt-10 md:mb-20 flex flex-col justify-center">
+      <h1 className="md:text-5xl font-semibold leading-16 text-center md:mb-10">
+        My Transaction
+      </h1>
 
+      <div className="w-full px-3 sm:px-4 md:px-8 ">
+        <div className="mx-auto mt-6 max-w-6xl rounded-3xl border border-base-200 bg-base-100 shadow-sm pb-8">
+          {/* Header */}
+          <div className="hidden grid-cols-12 items-center px-6 py-4 text-sm font-medium cursor-pointer text-gray-400 md:grid text-center">
+            <div className="col-span-1 hover:text-emerald-600">SL</div>
+            <div className="col-span-2 hover:text-emerald-600">Type</div>
+            <div className="col-span-2 hover:text-emerald-600">Category</div>
+            <div className="col-span-2 hover:text-emerald-600">Amount</div>
+            <div className="col-span-2 hover:text-emerald-600">Date</div>
+            <div className="col-span-3 hover:text-emerald-600">Action</div>
+          </div>
 
-
-
-
-           <div className='flex flex-col md:flex-row justify-between items-center bg-gray-50 rounded-2xl p-8 shadow-sm gap-6 md:my-10'>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg'>01</p>
-            </div>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold'>Type: <span>Expense</span></p>
-            </div>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold'>Category:  <span>Shopping</span></p>
-            </div>
-            <div className='flex items-center bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold md:me-3'>Amount:  </p>
-                <input type="number" value="1000" readonly className="input input-bordered w-full bg-base-200 text-gray-700 font-semibold" />
-            </div>
-            <div className='bg-white rounded-2xl p-4 shadow-md'>
-                <p className='text-lg font-semibold'>Date:  <span>25 January, 2025</span></p>
-            </div>
-            <button className='btn btn-primary'>View Details</button>
-            <button className='btn btn-primary'>Update</button>
-            <button className='btn btn-primary'>Delete</button>
-           </div> */}
-
-
-
-
-
-
-
-
-
-
-
-
-            <h1 className='md:text-5xl font-semibold leading-16 text-center md:mb-10'>My Transaction</h1>
-
-           <div>
-                <TransactionsTable></TransactionsTable>
-           </div>
+          {data.map((transaction, index) => (
+            <TransactionsTable
+              key={transaction._id}
+              transaction={transaction}
+              index={index}
+            />
+          ))}
         </div>
-    );
+      </div>
+
+      <div></div>
+    </div>
+  );
 };
 
 export default MyTransactions;

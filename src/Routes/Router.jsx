@@ -9,6 +9,8 @@ import Register from "../Pages/Register";
 import MyTransactions from "../Pages/MyTransactions";
 import AddTransactions from "../Pages/AddTransactions";
 import UpdateTransaction from "../Pages/UpdateTransaction";
+import TransactionDetails from "../Pages/TransactionDetails";
+import PrivateRoute from "../Provider/PrivateRoute";
 
 const router = createBrowserRouter(
     [
@@ -30,15 +32,29 @@ const router = createBrowserRouter(
                 },
                 {
                     path: "/my-transactions",
-                    element: <MyTransactions></MyTransactions> ,
+                    element: <PrivateRoute>
+                        <MyTransactions></MyTransactions>
+                    </PrivateRoute> ,
+                    loader: () => fetch('http://localhost:3000/transactions'),
                 },
                 {
                     path: "/add-transactions",
-                    element: <AddTransactions></AddTransactions> ,
+                    element: <PrivateRoute>
+                        <AddTransactions></AddTransactions>
+                    </PrivateRoute> ,
                 },
                 {
                     path: "/update-transaction",
-                    element: <UpdateTransaction></UpdateTransaction> ,
+                    element: <PrivateRoute>
+                        <UpdateTransaction></UpdateTransaction>
+                    </PrivateRoute> ,
+                },
+                {
+                    path: "/transaction-details/:id",
+                    element: <PrivateRoute>
+                        <TransactionDetails></TransactionDetails>
+                    </PrivateRoute> ,
+                    loader: ({params}) => fetch(`http://localhost:3000/transactions/${params.id}`)
                 },
                 
             ]

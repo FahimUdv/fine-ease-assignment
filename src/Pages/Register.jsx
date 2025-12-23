@@ -1,21 +1,64 @@
-import React from "react";
+import React, { use } from "react";
 import heroBanner from "../assets/heroBanner.mp4";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
+import { AuthContext } from "../Provider/AuthProvider";
+
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import app from "../Firebase/firebase.config";
+const auth = getAuth(app);
+
+const googleProvider = new GoogleAuthProvider();
 
 const Register = () => {
+  const { createUser, setUser } = use(AuthContext);
+
+  const handleGoogleSignUp = () => {
+    if (!auth) return;
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        alert("Signed up successfully with Google!");
+        // Navigate("/");
+      })
+      .catch((error) => {
+        console.log("Error during Google sign-up:", error);
+        alert(error.message);
+      });
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photo = form.photo.value;
+    const password = form.password.value;
+    createUser(email, password)
+      .then((result) => {
+        const createdUser = result.user;
+        setUser(createdUser);
+        console.log(createdUser);
+        form.reset();
+      })
+      .catch((error) => {
+        console.log(error.message);
+        alert(error.message);
+      });
+  };
+
   return (
     <div className="relative overflow-hidden rounded-4xl md:mx-30 md:py-8 flex items-center justify-center bg-base-200 md:mt-10 md:mb-20">
-          <video
-            src={heroBanner}
-            autoPlay
-            loop
-            muted
-            className="absolute top-0 left-0 z-0"
-          />
+      <video
+        src={heroBanner}
+        autoPlay
+        loop
+        muted
+        className="absolute top-0 left-0 z-0"
+      />
 
       {/* Registration Card */}
       <div className="w-full max-w-3xl z-10 bg-white/90 backdrop-blur-md rounded-3xl shadow-xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
-
         {/* LEFT SIDE – New Card Panel */}
         <div className="relative hidden md:block">
           <img
@@ -32,7 +75,8 @@ const Register = () => {
                 Create your account.
               </h1>
               <p className="text-gray-200 mt-4 max-w-xs">
-                Track income, expenses & savings with clarity and confidence. Start building your financial future today.
+                Track income, expenses & savings with clarity and confidence.
+                Start building your financial future today.
               </p>
             </div>
           </div>
@@ -47,17 +91,18 @@ const Register = () => {
             </p>
           </div>
 
-          <form className="space-y-4">
-
+          <form onSubmit={handleRegister} className="space-y-4">
             {/* Name */}
             <div>
               <label className="label">
                 <span className="label-text text-black">Full Name</span>
               </label>
               <input
+                name="name"
                 type="text"
                 placeholder="Enter your name"
                 className="input input-bordered w-full"
+                required
               />
             </div>
 
@@ -67,9 +112,11 @@ const Register = () => {
                 <span className="label-text text-black">Email</span>
               </label>
               <input
+                name="email"
                 type="email"
                 placeholder="Enter your email"
                 className="input input-bordered w-full"
+                required
               />
             </div>
 
@@ -79,9 +126,11 @@ const Register = () => {
                 <span className="label-text text-black">Photo URL</span>
               </label>
               <input
+                name="photo"
                 type="text"
                 placeholder="Profile picture link"
                 className="input input-bordered w-full"
+                required
               />
             </div>
 
@@ -91,14 +140,16 @@ const Register = () => {
                 <span className="label-text text-black">Password</span>
               </label>
               <input
+                name="password"
                 type="password"
                 placeholder="Create a password"
                 className="input input-bordered w-full"
+                required
               />
             </div>
 
             {/* Sign Up Button */}
-            <button className="btn btn-neutral w-full text-white">
+            <button type="submit" className="btn btn-neutral w-full text-white">
               Create Account
             </button>
 
@@ -106,7 +157,7 @@ const Register = () => {
             <div className="text-center text-sm text-gray-400">OR</div>
 
             {/* Google Signup */}
-            <button className="btn btn-outline w-full">
+            <button onClick={handleGoogleSignUp} className="btn btn-outline w-full">
               <svg
                 className="w-5 h-5 mr-2"
                 viewBox="0 0 48 48"
@@ -137,7 +188,10 @@ const Register = () => {
           {/* Login Redirect */}
           <p className="mt-6 text-center text-sm">
             Already have an account?
-            <Link to="/login" className="ml-1 text-primary cursor-pointer hover:underline">
+            <Link
+              to="/login"
+              className="ml-1 text-primary cursor-pointer hover:underline"
+            >
               Log In
             </Link>
           </p>

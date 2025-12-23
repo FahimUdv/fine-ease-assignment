@@ -1,8 +1,10 @@
-import React from "react";
+import React, { use } from "react";
 import styled from "styled-components";
 import { MdArrowOutward } from "react-icons/md";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Hero = () => {
+  const {user} = use(AuthContext);
   return (
     <div className="text-center py-10">
       <h1 className="md:text-5xl font-semibold leading-16">
@@ -10,6 +12,10 @@ const Hero = () => {
         <br />
         Save More.
       </h1>
+
+      <h1>{user && user.email}</h1>
+
+
 
       <p className="my-5 text-xl">
         FinEase helps you organize your finances with budgets, reports, and

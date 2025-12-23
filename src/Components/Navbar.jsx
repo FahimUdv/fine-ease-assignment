@@ -1,9 +1,20 @@
-import React from "react";
+import React, { use } from "react";
 import { Link, NavLink } from "react-router";
 import logo from "../assets/logo-white.png"
 import heroBanner from "../assets/heroBanner.mp4";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Navbar = () => {
+  const {user, logOut} = use(AuthContext);
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        alert("Logged out successfully");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
   
   const links = [
     <NavLink className="md:mx-3">Home</NavLink>,
@@ -47,9 +58,16 @@ const Navbar = () => {
           {links}
         </ul>
       </div>
-      <div className="navbar-end md:me-5">
-        <NavLink to="/login" className="btn rounded-full">Login</NavLink>
-      </div>
+      {
+        user ? 
+          (<div className="navbar-end md:me-5">
+            <button onClick={handleLogout} className="btn rounded-full">Log Out</button>
+          </div>) : 
+          (<div className="navbar-end md:me-5">
+            <NavLink to="/login" className="btn rounded-full">Login</NavLink>
+          </div>)
+      }
+      
     </div>
     </div>
   );
