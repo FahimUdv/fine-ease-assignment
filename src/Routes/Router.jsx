@@ -44,10 +44,11 @@ const router = createBrowserRouter(
                     </PrivateRoute> ,
                 },
                 {
-                    path: "/update-transaction",
+                    path: "/update-transaction/:id",
                     element: <PrivateRoute>
                         <UpdateTransaction></UpdateTransaction>
                     </PrivateRoute> ,
+                    loader: ({params}) => fetch(`http://localhost:3000/transactions/${params.id}`)
                 },
                 {
                     path: "/transaction-details/:id",

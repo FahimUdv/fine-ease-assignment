@@ -16,7 +16,7 @@ import {
 import { FiEye, FiMoreHorizontal } from "react-icons/fi";
 import { MdArrowOutward } from "react-icons/md";
 import { TbCurrencyTaka } from "react-icons/tb";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import styled from "styled-components";
 
 const TransactionDetails = () => {
@@ -113,6 +113,15 @@ const TransactionDetails = () => {
 
           {/* Renew Info */}
           <div className="pt-4 flex justify-center md:mt-5 items-center">
+            <StyledWrapper className="me-1">
+              {/* Second button: keeps the animated bubble behavior */}
+              <Link to={`/update-transaction/${transactions._id}`} className="button rounded-full me-5">
+                Update{" "}
+                <span className="icon">
+                  <MdArrowOutward />
+                </span>
+              </Link>
+            </StyledWrapper>
             <StyledWrapper>
               {/* Second button: keeps the animated bubble behavior */}
               <button className="button rounded-full">

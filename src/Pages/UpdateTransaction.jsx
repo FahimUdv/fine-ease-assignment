@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import img1 from "../assets/img1.jpg";
+import { useLoaderData } from "react-router";
 
 const UpdateTransaction = () => {
+  const data = useLoaderData();
+  const [transactions, setTransactions] = useState(data.result);
+  console.log(transactions);
+
   return (
     <div className="md:mt-10 md:mb-20">
       <h1 className="md:text-5xl font-semibold leading-16 text-center md:mb-10">
@@ -14,20 +19,41 @@ const UpdateTransaction = () => {
           Finease – Your finance tracker
         </p>
         <h1 className="text-3xl font-bold leading-tight mb-8 md:mb-10">
-          Edit Your Transaction and Maintain a Perfect <br></br>Financial History
+          Edit Your Transaction and Maintain a Perfect <br></br>Financial
+          History
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* -------- Left Form Section -------- */}
           <form className="space-y-6">
             {/* Row 1 */}
-            <div className="grid grid-cols-3 gap-4 md:mt-4">
-              <select className="select select-bordered bg-gray-100 w-full">
-                <option>Income</option>
-                <option>Expense</option>
+            {/* Description */}
+            <input
+              defaultValue={transactions.title}
+              type="text"
+              name="title"
+              placeholder="Title"
+              className="input input-bordered bg-gray-100 w-full"
+            />
+
+            <div className="grid grid-cols-3 gap-4">
+              <select
+                name="type"
+                value={transactions.type}
+                onChange={(e) =>
+                  setTransactions({ ...transactions, type: e.target.value })
+                }
+                className="select select-bordered bg-gray-100 w-full"
+              >
+                <option value="income">Income</option>
+                <option value="expanse">Expanse</option>
               </select>
 
-              <select className="select select-bordered bg-gray-100 w-full">
+              <select
+                defaultValue={transactions.category}
+                name="category"
+                className="select select-bordered bg-gray-100 w-full"
+              >
                 <option>Salary</option>
                 <option>Investment</option>
                 <option>House Rent</option>
@@ -40,7 +66,9 @@ const UpdateTransaction = () => {
               </select>
 
               <input
+                defaultValue={transactions.amount}
                 type="number"
+                name="amount"
                 placeholder="Amount"
                 className="input input-bordered bg-gray-100 w-full"
               />
@@ -48,31 +76,33 @@ const UpdateTransaction = () => {
 
             {/* Description */}
             <textarea
+              defaultValue={transactions.description}
               placeholder="Type"
+              name="description"
               className="textarea textarea-bordered bg-gray-100 w-full h-32"
             ></textarea>
 
             {/* Row 3 */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <input
                 type="date"
+                name="date"
+                value={new Date().toISOString().split("T")[0]}
+                readOnly
                 className="input input-bordered bg-gray-100 w-full"
               />
-              <input
-                type="text"
-                placeholder="Name"
-                className="input input-bordered bg-gray-100 w-full"
-              />
+
               <input
                 type="email"
-                placeholder="Email"
+                value={transactions.email}
+                readOnly
                 className="input input-bordered bg-gray-100 w-full"
               />
             </div>
 
             {/* Submit Button */}
             <button className="btn w-full bg-black text-white rounded-none hover:bg-gray-800">
-              Update
+              Add Transaction
             </button>
           </form>
 
