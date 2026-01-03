@@ -1,9 +1,12 @@
 import React, { use, useContext } from "react";
 import coins from "../assets/coins.jpg";
 import { AuthContext } from "../Provider/AuthProvider";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const AddTransactions = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleAddTransaction = (e) => {
     e.preventDefault();
@@ -15,7 +18,7 @@ const AddTransactions = () => {
       amount: e.target.amount.value,
       description: e.target.description.value,
       date: e.target.date.value,
-      email: user.email,
+      added_by: user.email,
     };
 
     fetch("http://localhost:3000/transactions", {
@@ -29,6 +32,8 @@ const AddTransactions = () => {
     .then(res => res.json())
     .then(data => {
       console.log(data);
+      toast.success("New Transaction Added!");
+      navigate(`/my-tran`);
     })
     .catch(error => {
       console.log("Error adding transaction:", error);

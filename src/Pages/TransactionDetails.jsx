@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import { CgCircleci } from "react-icons/cg";
 import {
   FaHome,
@@ -16,8 +16,11 @@ import {
 import { FiEye, FiMoreHorizontal } from "react-icons/fi";
 import { MdArrowOutward } from "react-icons/md";
 import { TbCurrencyTaka } from "react-icons/tb";
-import { Link, useLoaderData } from "react-router";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const TransactionDetails = () => {
   const categoryIcons = {
@@ -32,9 +35,70 @@ const TransactionDetails = () => {
     Others: FaClipboardList,
   };
 
-  const data = useLoaderData();
-  const transactions = data.result;
-  console.log(transactions);
+  const { user } = use(AuthContext);
+
+  const [transaction, setTransaction] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  // const data = useLoaderData();
+  // const transactions = data.result;
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/transactions/${id}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      setTransaction(data.result);
+      setLoading(false);
+    })
+  }, []);
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/transactions/${transaction._id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            navigate("/my-transactions");
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+            toast.success("Transaction Deleted!");
+          })
+          .catch((error) => {
+            console.log("Error adding transaction:", error);
+          });
+      }
+    });
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="md:mx-28 md:mt-10 md:mb-20 flex flex-col justify-center">
@@ -46,9 +110,9 @@ const TransactionDetails = () => {
         <div className="w-full md:max-w-5xl mx-auto bg-base-100 p-6 md:p-10 rounded-2xl shadow-sm">
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">{transactions.title}</h2>
+            <h2 className="text-xl font-semibold">{transaction.title}</h2>
             <h2 className="text-xl font-semibold">
-              Amount: {transactions.amount} BDT
+              Amount: {transaction.amount} BDT
             </h2>
           </div>
 
@@ -59,26 +123,26 @@ const TransactionDetails = () => {
               <div className="w-20 h-14 bg-white rounded-xl flex items-center justify-center">
                 {(() => {
                   const Icon =
-                    categoryIcons[transactions.category] || FaClipboardList;
+                    categoryIcons[transaction.category] || FaClipboardList;
                   return <Icon className="w-16 h-8" />;
                 })()}
               </div>
 
               <div>
-                <p>{transactions.description}</p>
+                <p>{transaction.description}</p>
               </div>
             </div>
 
             {/* Card Details */}
             <div className="grid grid-cols-2 w-[45%] md:ps-40 gap-y-2 text-sm">
               <p className="font-medium">Type</p>
-              <p>{transactions.type}</p>
+              <p>{transaction.type}</p>
 
               <p className="font-medium">Category</p>
-              <p>{transactions.category}</p>
+              <p>{transaction.category}</p>
 
               <p className="font-medium">Date</p>
-              <p>{transactions.date}</p>
+              <p>{transaction.date}</p>
             </div>
           </div>
 
@@ -86,7 +150,7 @@ const TransactionDetails = () => {
           <div className="mt-6 flex justify-between items-center">
             <div>
               <p className="text-sm mb-2 text-base-content/60">
-                Total <span>{transactions.category}</span> {transactions.type}
+                Total <span>{transaction.category}</span> {transaction.type}
               </p>
               <p className="flex items-center text-2xl font-semibold">
                 <TbCurrencyTaka />
@@ -113,15 +177,15 @@ const TransactionDetails = () => {
 
           {/* Renew Info */}
           <div className="pt-4 flex justify-center md:mt-5 items-center">
-            <StyledWrapper className="me-1">
-              {/* Second button: keeps the animated bubble behavior */}
-              <Link to={`/update-transaction/${transactions._id}`} className="button rounded-full me-5">
-                Update{" "}
-                <span className="icon">
-                  <MdArrowOutward />
-                </span>
-              </Link>
-            </StyledWrapper>
+            <Link
+              to={`/update-transaction/${transaction._id}`}
+              className="btn bg-black text-cyan-50 rounded-full px-16 me-2 border border-transparent transition-colors duration-300 hover:bg-white hover:border-black hover:text-black"
+            >
+              Update{" "}
+              <span className="icon">
+                <MdArrowOutward />
+              </span>
+            </Link>
             <StyledWrapper>
               {/* Second button: keeps the animated bubble behavior */}
               <button className="button rounded-full">
@@ -131,6 +195,12 @@ const TransactionDetails = () => {
                 </span>
               </button>
             </StyledWrapper>
+            <button
+              onClick={handleDelete}
+              className="btn bg-red-600 text-cyan-50 rounded-2xl ms-2"
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>

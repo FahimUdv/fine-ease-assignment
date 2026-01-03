@@ -1,39 +1,21 @@
-import React, { use, useContext, useEffect, useState } from "react";
-import TransactionsTable from "../Components/TransactionsTable";
-import { useLoaderData } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
+import TransactionsTable from "../Components/TransactionsTable";
 
-const MyTransactions = () => {
-  // const data = useLoaderData();
+const Mytran = () => {
   const { user } = useContext(AuthContext);
-
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   fetch(`http://localhost:3000/transactions?email=${user.email}`, {
-  //     // headers: {
-  //     //   authorization: `Bearer ${user.accessToken}`,
-  //     // },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setTransaction(data.result);
-  //       setLoading(false);
-  //     });
-  // }, []);
-
   useEffect(() => {
-    if (!user?.email) return;
-
-    fetch(`http://localhost:3000/transactions?email=${user.email}`)
+    fetch(`http://localhost:3000/my-tran?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setTransactions(data);
         setLoading(false);
       });
-  }, [user]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -42,7 +24,7 @@ const MyTransactions = () => {
   return (
     <div className="md:mx-28 md:mt-10 md:mb-20 flex flex-col justify-center">
       <h1 className="md:text-5xl font-semibold leading-16 text-center md:mb-10">
-        My Transaction
+        My My Transaction
       </h1>
 
       <div className="w-full px-3 sm:px-4 md:px-8 ">
@@ -57,18 +39,10 @@ const MyTransactions = () => {
             <div className="col-span-3 hover:text-emerald-600">Action</div>
           </div>
 
-          {/* {transactions.map((transaction, index) => (
+          {transactions.map((transaction, index) => (
             <TransactionsTable
               key={transaction._id}
               transaction={transaction}
-              index={index}
-            />
-          ))} */}
-
-          {transactions.map((tran, index) => (
-            <TransactionsTable
-              key={tran._id}
-              tran={tran}
               index={index}
             />
           ))}
@@ -78,4 +52,4 @@ const MyTransactions = () => {
   );
 };
 
-export default MyTransactions;
+export default Mytran;
