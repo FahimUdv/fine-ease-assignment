@@ -45,7 +45,7 @@ const Home = () => {
         <div className="text-center md:pt-10 md:pb-10">
           <StyledWrapper>
             {/* Second button: keeps the animated bubble behavior */}
-            <Link to={'/my-transactions'} className="button rounded-full">
+            <Link to={'/my-tran'} className="button rounded-full">
               View More{" "}
               <span className="icon">
                 <MdArrowOutward />
